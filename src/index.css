@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply box-border;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white dark:bg-dark text-light-dark dark:text-white font-dm-sans transition-colors duration-300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-sora font-bold;
+}
+
+@layer components {
+  .pill-btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-sora font-semibold transition-all duration-300 text-sm;
+  }
+
+  .pill-btn-primary {
+    @apply pill-btn bg-primary text-dark hover:shadow-lg hover:scale-105;
+  }
+
+  .pill-btn-secondary {
+    @apply pill-btn bg-white border-2 border-dark text-dark dark:bg-dark dark:border-white dark:text-white hover:bg-light-dark hover:text-white dark:hover:bg-light-dark;
+  }
+
+  .pill-btn-ghost {
+    @apply pill-btn bg-transparent border-2 border-muted text-muted hover:border-dark dark:hover:border-white dark:hover:text-white;
+  }
+
+  .card {
+    @apply bg-white dark:bg-light-dark rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300;
+  }
+
+  .badge-pill {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-primary/20 text-dark dark:text-white border border-primary;
+  }
+
+  .frosted-glass {
+    @apply backdrop-blur-md bg-white/80 dark:bg-dark/80;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
