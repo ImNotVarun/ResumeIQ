@@ -9,6 +9,8 @@ import { KeywordsPage } from './pages/KeywordsPage';
 import { FormatterPage } from './pages/FormatterPage';
 import { CoverLetterPage } from './pages/CoverLetterPage';
 import { HistoryPage } from './pages/HistoryPage';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
 
 function App() {
   const { darkMode } = useResumeStore();
@@ -33,6 +35,8 @@ function App() {
             <Route path="/format" element={<FormatterPage />} />
             <Route path="/cover-letter" element={<CoverLetterPage />} />
             <Route path="/history" element={<HistoryPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
           </Routes>
         </main>
         <Toast />

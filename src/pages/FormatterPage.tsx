@@ -1,5 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Check, X, Download } from 'lucide-react';
+import { useState } from 'react';
+import {
+  Check,
+  X,
+  Download,
+  Sparkles,
+  FileText,
+  AlertTriangle,
+} from 'lucide-react';
 import { FileDropzone } from '../components/FileDropzone';
 import { showToast } from '../components/Toast';
 
@@ -148,16 +155,16 @@ ResumeIQ - Resume Formatter Checklist
 Progress: ${completedCount}/${checklist.length} (${progress}%)
 
 ${checklist
-  .map(
-    (item) => `
+        .map(
+          (item) => `
 [${item.completed ? 'X' : ' '}] ${item.title}
 Category: ${item.category}
 Description: ${item.description}
 Status: ${item.completed ? 'Complete' : 'Pending'}
 ${item.autoDetected ? '(Auto-detected as complete)' : ''}
 `
-  )
-  .join('\n')}
+        )
+        .join('\n')}
 
 Tips for Optimization:
 - Test your resume with ATS scanners
@@ -177,90 +184,364 @@ Generated: ${new Date().toLocaleString()}
     document.body.removeChild(element);
     showToast('Checklist downloaded', 'success');
   };
-
   return (
-    <div className="min-h-screen bg-white dark:bg-dark">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-sora font-bold text-dark dark:text-white mb-2">Resume Formatter</h1>
-          <p className="text-muted">Optimize your resume formatting for ATS compatibility</p>
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-[#0b1120] dark:via-[#111827] dark:to-[#0f172a]">
+
+      <div className="max-w-[1700px] mx-auto px-6 lg:px-10 py-10">
+
+        {/* HEADER */}
+        <div className="mb-10">
+
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/10 backdrop-blur-md mb-5">
+            <Sparkles size={16} className="text-primary" />
+
+            <span className="text-sm font-medium text-primary">
+              ATS Resume Formatting Optimizer
+            </span>
+          </div>
+
+          <h1 className="text-5xl font-black tracking-tight text-dark dark:text-white">
+            Resume Formatter
+          </h1>
+
+          <p className="mt-4 text-lg text-muted max-w-4xl leading-relaxed">
+            Optimize your resume formatting for ATS compatibility,
+            recruiter readability, and automated parsing systems.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-sora font-semibold text-dark dark:text-white mb-4">Upload Resume</h2>
+        {/* TOP SECTION */}
+        <div className="grid xl:grid-cols-[420px_1fr] gap-8 items-start">
+
+          {/* LEFT PANEL */}
+          <div className="space-y-6 sticky top-6">
+
+            {/* Upload */}
+            <div className="rounded-3xl border border-white/20 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl p-7">
+
+              <div className="flex items-center gap-4 mb-6">
+
+                <div className="p-3 rounded-2xl bg-primary/10">
+                  <FileText
+                    className="text-primary"
+                    size={24}
+                  />
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-bold text-dark dark:text-white">
+                    Upload Resume
+                  </h2>
+
+                  <p className="text-sm text-muted">
+                    Upload PDF, DOCX, or TXT resume
+                  </p>
+                </div>
+              </div>
+
               <FileDropzone onFileSelect={handleFileSelect} />
             </div>
 
+            {/* Progress */}
             {resumeText && (
-              <div className="card">
-                <p className="text-sm text-muted mb-2">Progress</p>
-                <div className="relative h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-2">
-                  <div
-                    className="h-full bg-success transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-                <p className="text-2xl font-sora font-bold text-dark dark:text-white">
-                  {completedCount}/{checklist.length}
-                </p>
-                <p className="text-sm text-muted mt-2">{progress}% complete</p>
-              </div>
-            )}
-          </div>
+              <div className="rounded-3xl border border-white/20 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl p-7">
 
-          {/* Checklist */}
-          <div className="lg:col-span-2 space-y-4">
-            {checklist.map((item, i) => (
-              <div
-                key={item.id}
-                onClick={() => toggleItem(item.id)}
-                className={`card cursor-pointer transition-all hover:shadow-md ${
-                  item.completed ? 'bg-success/5 dark:bg-success/10' : ''
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <button
-                    className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
-                      item.completed
-                        ? 'bg-success border-success text-white'
-                        : 'border-gray-300 dark:border-gray-600 hover:border-primary'
-                    }`}
-                  >
-                    {item.completed && <Check size={16} />}
-                  </button>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className={`font-semibold ${item.completed ? 'text-success line-through' : 'text-dark dark:text-white'}`}>
-                        {item.title}
-                      </h3>
-                      {item.autoDetected && (
-                        <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
-                          Auto-detected
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted mb-2">{item.description}</p>
-                    <div className="flex items-center gap-2 text-xs bg-warning/10 text-warning px-2 py-1 rounded w-fit border border-warning/30">
-                      <span>⚠️</span>
-                      <span>{item.warning}</span>
-                    </div>
-                    <p className="text-xs text-muted mt-2">Category: {item.category}</p>
+                <div className="flex items-center justify-between mb-4">
+
+                  <div>
+                    <p className="text-sm text-muted">
+                      ATS Optimization Score
+                    </p>
+
+                    <h3 className="text-4xl font-black text-dark dark:text-white mt-1">
+                      {progress}%
+                    </h3>
+                  </div>
+
+                  <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+
+                    <Check
+                      size={34}
+                      className="text-primary"
+                    />
                   </div>
                 </div>
-              </div>
-            ))}
 
+                <div className="relative h-4 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden mb-3">
+
+                  <div
+                    className="
+                    h-full
+                    rounded-full
+                    bg-gradient-to-r
+                    from-primary
+                    to-indigo-500
+                    transition-all
+                    duration-700
+                  "
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between text-sm">
+
+                  <span className="text-muted">
+                    {completedCount}/{checklist.length} completed
+                  </span>
+
+                  <span className="font-semibold text-primary">
+                    ATS Ready
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Download */}
             {resumeText && (
               <button
                 onClick={downloadChecklist}
-                className="w-full pill-btn-secondary py-3 flex items-center justify-center gap-2 mt-8"
+                className="
+                w-full
+                rounded-2xl
+                border
+                border-primary/20
+                bg-white/70
+                dark:bg-white/5
+                backdrop-blur-xl
+                py-4
+                font-semibold
+                flex
+                items-center
+                justify-center
+                gap-3
+                hover:shadow-xl
+                hover:border-primary/40
+                transition-all
+              "
               >
                 <Download size={20} />
+
                 Download Checklist
               </button>
+            )}
+          </div>
+
+          {/* RIGHT PANEL */}
+          <div className="space-y-6">
+
+            {/* CHECKLIST GRID */}
+            <div className="grid lg:grid-cols-2 gap-6">
+
+              {checklist.map((item) => (
+
+                <div
+                  key={item.id}
+                  onClick={() => toggleItem(item.id)}
+                  className={`
+                  relative
+                  overflow-hidden
+                  rounded-3xl
+                  border
+                  backdrop-blur-xl
+                  shadow-xl
+                  p-6
+                  cursor-pointer
+                  transition-all
+                  duration-300
+                  hover:scale-[1.01]
+                  hover:shadow-2xl
+                  ${item.completed
+                      ? 'border-emerald-500/30 bg-emerald-500/5'
+                      : 'border-white/20 bg-white/70 dark:bg-white/5'
+                    }
+                `}
+                >
+
+                  {/* TOP */}
+                  <div className="flex items-start gap-4">
+
+                    {/* CHECK ICON */}
+                    <div
+                      className={`
+                      flex-shrink-0
+                      w-12
+                      h-12
+                      rounded-2xl
+                      flex
+                      items-center
+                      justify-center
+                      border-2
+                      transition-all
+                      ${item.completed
+                          ? 'bg-emerald-500 border-emerald-500 text-white'
+                          : 'border-gray-300 dark:border-white/10 bg-white/60 dark:bg-black/20'
+                        }
+                    `}
+                    >
+
+                      {item.completed ? (
+                        <Check size={22} />
+                      ) : (
+                        <X
+                          size={18}
+                          className="text-muted"
+                        />
+                      )}
+                    </div>
+
+                    {/* CONTENT */}
+                    <div className="flex-1">
+
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+
+                        <h3
+                          className={`
+                          text-lg
+                          font-bold
+                          ${item.completed
+                              ? 'text-emerald-500'
+                              : 'text-dark dark:text-white'
+                            }
+                        `}
+                        >
+                          {item.title}
+                        </h3>
+
+                        {item.autoDetected && (
+                          <span className="
+                          text-xs
+                          font-semibold
+                          px-3
+                          py-1
+                          rounded-full
+                          bg-primary/10
+                          text-primary
+                          border
+                          border-primary/20
+                        ">
+                            Auto Detected
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-sm text-muted leading-relaxed mb-4">
+                        {item.description}
+                      </p>
+
+                      {/* WARNING */}
+                      <div className="
+                      rounded-2xl
+                      border
+                      border-yellow-500/20
+                      bg-yellow-500/10
+                      p-4
+                    ">
+
+                        <div className="flex items-start gap-3">
+
+                          <AlertTriangle
+                            size={18}
+                            className="text-yellow-500 mt-0.5"
+                          />
+
+                          <div>
+
+                            <p className="text-xs font-bold uppercase text-yellow-500 mb-1">
+                              Warning
+                            </p>
+
+                            <p className="text-sm text-dark dark:text-white leading-relaxed">
+                              {item.warning}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* CATEGORY */}
+                      <div className="mt-4 flex items-center justify-between">
+
+                        <span className="
+                        text-xs
+                        font-semibold
+                        px-3
+                        py-1
+                        rounded-full
+                        bg-slate-100
+                        dark:bg-white/10
+                        text-muted
+                      ">
+                          {item.category}
+                        </span>
+
+                        <span
+                          className={`
+                          text-xs
+                          font-bold
+                          ${item.completed
+                              ? 'text-emerald-500'
+                              : 'text-muted'
+                            }
+                        `}
+                        >
+                          {item.completed ? 'Completed' : 'Pending'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* EMPTY STATE */}
+            {!resumeText && (
+              <div className="
+              rounded-3xl
+              border
+              border-dashed
+              border-gray-300
+              dark:border-white/10
+              bg-white/60
+              dark:bg-white/5
+              backdrop-blur-xl
+              shadow-xl
+              min-h-[300px]
+              flex
+              items-center
+              justify-center
+              p-10
+            ">
+
+                <div className="text-center max-w-xl">
+
+                  <div className="
+                  w-24
+                  h-24
+                  mx-auto
+                  mb-6
+                  rounded-3xl
+                  bg-primary/10
+                  flex
+                  items-center
+                  justify-center
+                ">
+
+                    <Sparkles
+                      size={42}
+                      className="text-primary"
+                    />
+                  </div>
+
+                  <h3 className="text-3xl font-bold text-dark dark:text-white mb-4">
+                    Ready to Optimize
+                  </h3>
+
+                  <p className="text-muted leading-relaxed text-lg">
+                    Upload your resume to receive ATS formatting analysis,
+                    layout validation, readability checks, and recruiter
+                    optimization recommendations.
+                  </p>
+                </div>
+              </div>
             )}
           </div>
         </div>
